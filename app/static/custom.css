@@ -54,7 +54,6 @@ a.article-title:hover {
 .comment-img {
   height: 30px;
   width: 30px;
-  margin-right: 20px;
 }
 
 .article-metadata {
@@ -83,4 +82,10 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.comment-content {
+
+  font-size:0.7rem;
+  margin-top: 10px;
 }

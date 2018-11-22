@@ -106,8 +106,15 @@ def post(post_id):
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added!', 'success')
-        return render_template('post.html', title = post.title, post=post, form=form)
+        return redirect('/post/'+(str(post_id)))#render_template('post.html', title = post.title, post=post, form=form)
     return render_template('post.html', title = post.title, post=post, form=form)
+
+# delete comment feature
+# @app.route("/post/<int:post_id>/deletecomment", methods = ['POST'])
+# @login_required
+# def delete_comment(post_id):
+
+
 
 @app.route("/post/<int:post_id>/update", methods = ['POST', 'GET'])
 @login_required
