@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect, url_for, flash, abort
 from app import app,db,bcrypt
-from app.forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
+from app.forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm, CommentForm
 from app.models import User,Post,Comment
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -97,10 +97,17 @@ def new_post():
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New post', form=form, legend = 'New Post')
 
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods = ['POST', 'GET'])
 def post(post_id):
+    form = CommentForm()
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title = post.title, post=post)
+    if form.validate_on_submit():
+        comment = Comment(content=form.content.data, comment_author=current_user, post_id = post.id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been added!', 'success')
+        return render_template('post.html', title = post.title, post=post, form=form)
+    return render_template('post.html', title = post.title, post=post, form=form)
 
 @app.route("/post/<int:post_id>/update", methods = ['POST', 'GET'])
 @login_required

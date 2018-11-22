@@ -39,4 +39,4 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"User('{self.post_id})"
+        return f"User('{self.content})"
