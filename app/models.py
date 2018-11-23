@@ -35,6 +35,7 @@ class User(db.Model, UserMixin):
         return f"User('{self.username}','{self.email}','{self.image_file}')"
 
 class Post(db.Model):
+    __searchable__ = ['title', 'content']
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable = False)
     picture = db.Column(db.String(20))

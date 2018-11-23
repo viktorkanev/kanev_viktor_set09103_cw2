@@ -7,6 +7,7 @@ import secrets
 import os
 from PIL import Image
 from flask_mail import Message
+from sqlalchemy import or_
 
 @app.route('/')
 @app.route('/home')
@@ -14,6 +15,13 @@ def home():
     page = request.args.get('page', 1, type = int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', title="Home", posts = posts)
+
+@app.route('/search')
+def search():
+    query = request.args.get('query')
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter(or_(Post.content.like('%'+query+'%'),Post.title.like('%'+query+'%'))).paginate(page=page, per_page=5)
+    return render_template('home.html',title="Home", posts=posts)
 
 @app.route("/about")
 def about():

@@ -20,40 +20,42 @@
 
         <h2><a class="article-title">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content }}</p>
-    {% if current_user.is_authenticated %}
-            <div class="content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <div class="form-group">
-                    {% if form.content.errors %}
+        {% if current_user.is_authenticated %}
+        <div class="content-section" style="padding: 10px 20px 0px">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-group" style="margin-bottom: 0rem">
+                        {% if form.content.errors %}
                         {{ form.content(class="form-control form-control-sm is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.content.errors %}
-                                <span>{{ error }}</span>
+                            <span>{{ error }}</span>
                             {% endfor %}
                         </div>
-                    {% else %}
+                        {% else %}
                         {{ form.content(class="form-control form-control-sm") }}
-                    {% endif %}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-warning btn-sm") }}
                 </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-warning btn-sm") }}
-            </div>
-        </form>
-            </div>
+            </form>
+        </div>
         {% else %}
         {% endif %}
 
         <div class="media-body"><h6>Comments:</h6>
             <div class="content-section">
-            {% for comment in post.comments|sort(attribute='date_posted', reverse=True) %}
-            <img class="rounded-circle comment-img" src="{{ url_for('static', filename='avatars/' + comment.comment_author.image_file) }}">
-            <small class="text-muted"><b>{{ comment.comment_author.username }}</b></small>
-            <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d @%H:%M') }}</small>
-            <p class="comment-content">{{ comment.content }}</p><hr/>
-            {% endfor %}
+                {% for comment in post.comments|sort(attribute='date_posted', reverse=True) %}
+                <img class="rounded-circle comment-img"
+                     src="{{ url_for('static', filename='avatars/' + comment.comment_author.image_file) }}">
+                <small class="text-muted"><b>{{ comment.comment_author.username }}</b></small>
+                <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d @%H:%M') }}</small>
+                <p class="comment-content">{{ comment.content }}</p>
+                <hr/>
+                {% endfor %}
             </div>
         </div>
     </div>
