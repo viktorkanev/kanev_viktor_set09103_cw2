@@ -1,6 +1,7 @@
-from app import db, login_manager
+from app import db, login_manager, app
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @login_manager.user_loader
@@ -16,6 +17,19 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     usercom = db.relationship('Comment', backref='comment_author', lazy=True)
 
+    def get_reset_token(self, expirse_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expirse_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
 
     def __repr__(self):
         return f"User('{self.username}','{self.email}','{self.image_file}')"
@@ -23,13 +37,14 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable = False)
+    picture = db.Column(db.String(20))
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comment', backref='post', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.title}','{self.date_posted}')"
+        return f"Post('{self.title}','{self.date_posted}')"
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,4 +54,5 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"User('{self.content})"
+        return f"Message('{self.content})"
+

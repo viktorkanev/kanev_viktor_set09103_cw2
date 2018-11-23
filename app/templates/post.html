@@ -48,7 +48,7 @@
 
         <div class="media-body"><h6>Comments:</h6>
             <div class="content-section">
-           {% for comment in post.comments|sort(attribute='date_posted', reverse=True) %}
+            {% for comment in post.comments|sort(attribute='date_posted', reverse=True) %}
             <img class="rounded-circle comment-img" src="{{ url_for('static', filename='avatars/' + comment.comment_author.image_file) }}">
             <small class="text-muted"><b>{{ comment.comment_author.username }}</b></small>
             <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d @%H:%M') }}</small>
