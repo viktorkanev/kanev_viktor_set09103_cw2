@@ -19,6 +19,10 @@
         </div>
 
         <h2><a class="article-title">{{ post.title }}</a></h2>
+        {% if post.picture != None %}
+              <img class="img-fluid" src="{{ url_for('static', filename='avatars/' + post.picture) }}">
+              {% else %}
+              {% endif %}
         <p class="article-content">{{ post.content }}</p>
         {% if current_user.is_authenticated %}
         <div class="content-section" style="padding: 10px 20px 0px">

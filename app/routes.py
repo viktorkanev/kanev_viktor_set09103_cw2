@@ -20,7 +20,7 @@ def home():
 def search():
     query = request.args.get('query')
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.filter(or_(Post.content.like('%'+query+'%'),Post.title.like('%'+query+'%'))).paginate(page=page, per_page=5)
+    posts = Post.query.filter(or_(Post.content.like('%'+query+'%'),Post.title.like('%'+query+'%'))).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html',title="Home", posts=posts)
 
 @app.route("/about")
@@ -75,6 +75,18 @@ def save_picture(form_picture):
 
     return picture_fn
 
+
+def save_post_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/avatars', picture_fn)
+
+    i = Image.open(form_picture)
+    i.save(picture_path)
+
+    return picture_fn
+
 @app.route("/profile", methods = ['POST', 'GET'])
 @login_required
 def profile():
@@ -99,7 +111,10 @@ def profile():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content = form.content.data, author=current_user)
+        picture = None
+        if form.picture.data:
+            picture = save_post_picture(form.picture.data)
+        post = Post(title=form.title.data, content = form.content.data,picture=picture, author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Post has been created!', 'success')
@@ -133,6 +148,9 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_post_picture(form.picture.data)
+            post.picture = picture_file
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
