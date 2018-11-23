@@ -9,15 +9,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: #1b1b20;
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  font-family: 'Fugaz One', cursive;
+  font-size: 20px;
+  color: #ffffff;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
+  color: #774cce;
 }
 
 .site-header .navbar-nav .nav-link.active {
@@ -89,3 +91,4 @@ a.article-title:hover {
   font-size:0.7rem;
   margin-top: 10px;
 }
+
