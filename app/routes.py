@@ -23,10 +23,6 @@ def search():
     posts = Post.query.filter(or_(Post.content.like('%'+query+'%'),Post.title.like('%'+query+'%'))).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html',title="Home", posts=posts)
 
-@app.route("/about")
-def about():
-    return  render_template('about.html', title= 'About')
-
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
