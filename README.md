@@ -11,6 +11,11 @@ pip3 install -r requirements.txt
 ## Running The Application
 To start the application
 
+First navigate to the project folder
+```bash
+$ cd 'project folder'
+```
+
 ```bash
 $ FLASK_APP=app.py
 $ FLASK_ENV=environment  
