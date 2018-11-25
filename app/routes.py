@@ -59,6 +59,7 @@ def logout():
     return redirect(url_for('home'))
 
 def save_picture(form_picture):
+    #generates random hex using secrets module, for older versions of python replace with os.urandom(8).hex()
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext

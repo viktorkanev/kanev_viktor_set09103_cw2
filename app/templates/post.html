@@ -4,7 +4,8 @@
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='avatars/' + post.author.image_file) }}">
     <div class="media-body">
         <div class="article-metadata">
-            <small class="muted-text">Posted by </small><a class="mr-1" href="{{ url_for('user_post', username=post.author.username) }}">{{ post.author.username
+            <small class="muted-text">Posted by</small>
+            <a class="mr-1" href="{{ url_for('user_post', username=post.author.username) }}">{{ post.author.username
                 }}</a>
             <small class="text-muted">on {{ post.date_posted.strftime('%Y-%m-%d at %H:%M') }}</small>
             {% if post.author == current_user %}
@@ -20,9 +21,9 @@
 
         <h2><a class="article-title">{{ post.title }}</a></h2>
         {% if post.picture != None %}
-              <img class="img-fluid" src="{{ url_for('static', filename='post_pictures/' + post.picture) }}">
-              {% else %}
-              {% endif %}
+        <img class="img-fluid" src="{{ url_for('static', filename='post_pictures/' + post.picture) }}">
+        {% else %}
+        {% endif %}
         <p class="article-content">{{ post.content }}</p>
         {% if current_user.is_authenticated %}
         <div class="content-section" style="padding: 10px 20px 0px">
